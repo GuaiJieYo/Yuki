@@ -1,5 +1,4 @@
 import ThemeConfig from "@/config.theme";
-import commitHash from "@/commitHash.config";
 import type { themeConfig } from "@/types";
 
 /**
@@ -7,7 +6,7 @@ import type { themeConfig } from "@/types";
  * @returns 返回处理后的主题配置对象
  */
 export const getThemeConfig = (): themeConfig => {
-  const config = { ...ThemeConfig, commitHash };
+  const config = { ...ThemeConfig, commitHash: import.meta.env.COMMIT_HASH };
   const { site } = config;
 
   // 设置默认值

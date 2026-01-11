@@ -2,24 +2,18 @@ const { exec } = require("child_process");
 const fs = require("fs").promises;
 const path = require("path");
 
-// 获取git版本号
-exec("git rev-parse HEAD", async (error, stdout, stderr) => {
-  let configPath = path.join(__dirname, "../src/versionHash.config.ts");
+const configPath = path.join(__dirname, "../.env");
 
+// 获取当前git提交的hash值
+exec("git rev-parse HEAD", async (error, stdout, stderr) => {
+  const hash = error || stderr ? "" : stdout.trim();
+  const logMsg = hash
+    ? `执行version成功:${hash}`
+    : `执行version出错:${error || stderr}`;
+
+  console.log(logMsg);
   try {
-    if (error || stderr || !stdout) {
-      console.log(`执行version出错:${error || stderr}`);
-      await fs.writeFile(
-        configPath,
-        `// 请勿修改此文件\nexport default false;`
-      );
-    } else {
-      console.log(`执行version成功:${stdout.trim()}`);
-      await fs.writeFile(
-        configPath,
-        `// 请勿修改此文件\nexport default "${stdout.trim()}";`
-      );
-    }
+    await fs.writeFile(configPath, `COMMIT_HASH=${hash}`);
   } catch (err) {
     console.error("写入文件失败:", err);
   }
