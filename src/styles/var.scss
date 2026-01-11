@@ -6,11 +6,13 @@ $themes: (
   light:
     (
       --text-color: rgb(26, 28, 30),
+      --bg-color: rgb(255, 255, 255),
     ),
   // 暗色主题
   dark:
     (
       --text-color: rgb(226, 226, 230),
+      --bg-color: rgb(26, 28, 30),
     ),
   // 通用主题(亮暗色下都适用的样式)
   common:

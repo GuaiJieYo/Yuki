@@ -2,8 +2,10 @@
 import { getThemeConfig } from "@/utils";
 import Divider from "./base/Divider.astro";
 
+// 获取主题配置
 let { nav, footer, author } = getThemeConfig().site;
 let { icp, copyright } = footer;
+let commitHash = getThemeConfig().commitHash;
 ---
 
 <footer>
@@ -47,23 +49,73 @@ let { icp, copyright } = footer;
       <span>
         Powered by <a href="https://astro.build/" target="_blank">Astro</a> & <a
           href="https://github.com/GuaiJieYo/Yuki"
-          target="_blank">Yuki</a
+          target="_blank"
+          data-github>Yuki</a
         >
+        <span class="version" data-github>
+          <i class="ri-github-line"></i>
+          版本哈希:
+          {
+            commitHash ? (
+              <a
+                title="只取前10位"
+                target="_blank"
+                href={`https://github.com/GuaiJieYo/Yuki/commit/${commitHash}`}
+              >
+                {commitHash.slice(0, 10)}
+              </a>
+            ) : (
+              "哈希值获取失败"
+            )
+          }
+        </span>
       </span>
     </div>
   </div>
 </footer>
 <script>
   // 计算版权时间
-  let copyTime = document.querySelector(
+  let copyTimeSpan = document.querySelector(
     ".copyright > span > .time"
   ) as HTMLElement;
   let nowYear = new Date().getFullYear().toString();
-  copyTime.innerText =
-    copyTime.innerText == nowYear
+  copyTimeSpan.innerText =
+    copyTimeSpan.innerText == nowYear
       ? nowYear
-      : `${copyTime.innerText} - ${nowYear}`;
+      : `${copyTimeSpan.innerText} - ${nowYear}`;
+
+  // 移入效果
+  let yukiGithubLink = document.querySelector(
+    ".copyright > span > a[data-github]"
+  ) as HTMLElement;
+  let versionElement = document.querySelector(".version") as HTMLElement;
+
+  // 显示版本哈希
+  const showVersion = () => {
+    versionElement.classList.add("show");
+  };
+
+  // 隐藏版本哈希
+  const hideVersion = () => {
+    versionElement.classList.remove("show");
+  };
+
+  // 为GitHub链接添加事件监听
+  yukiGithubLink.addEventListener("mouseenter", showVersion);
+  yukiGithubLink.addEventListener("mouseleave", () => {
+    // 检查鼠标是否移动到了版本元素上
+    setTimeout(() => {
+      if (!versionElement.matches(":hover")) {
+        hideVersion();
+      }
+    }, 100);
+  });
+
+  // 为版本元素添加事件监听
+  versionElement.addEventListener("mouseenter", showVersion);
+  versionElement.addEventListener("mouseleave", hideVersion);
 </script>
+
 <style lang="scss">
   footer {
     width: 100%;
@@ -100,6 +152,34 @@ let { icp, copyright } = footer;
         justify-content: space-between;
         align-items: center;
         font-size: 0.8rem;
+
+        span {
+          position: relative;
+
+          .version {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            font-size: 1rem;
+            padding: 8px 12px;
+            border-radius: 10px;
+            background: var(--bg-color);
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            white-space: nowrap;
+            transition: all 0.3s ease-in-out;
+
+            // 隐藏
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-20px);
+
+            &.show {
+              opacity: 1;
+              visibility: visible;
+              transform: translateY(0);
+            }
+          }
+        }
       }
     }
   }

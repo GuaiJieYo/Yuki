@@ -174,10 +174,14 @@ export type themeConfig = {
       copyright: {
         /**
          * @name 开始日期
-         * @default "© 2022-2023 Yuki. All rights reserved."
          */
         start: string;
       };
     };
   };
+  /**
+   * @name 版本信息
+   * @description 请勿手动修改版本配置
+   */
+  commitHash?: string;
 };

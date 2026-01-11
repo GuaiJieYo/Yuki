@@ -4,8 +4,10 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
     "preview": "astro preview",
+    "build": "pnpm run version && pnpm run astro:build",
+    "version": "node ./scripts/commitHash.build.cjs",
+    "astro:build": "astro build",
     "astro:check": "astro check",
     "astro": "astro"
   },
