@@ -7,7 +7,7 @@ Yuki 是一个简单 轻量的 Astro 主题，基于 Astro 0.8.0 开发
 
 ## 预览
 
-[预览地址 https://yuki-inky-one.vercel.app/](https://yuki-inky-one.vercel.app/)
+[预览地址](https://demo.yuki.guaijie.eu.org)
 
 ## 功能(开发中)
 

@@ -5,12 +5,17 @@ import Divider from "./base/Divider.astro";
 // 获取主题配置
 let { nav, footer, author } = getThemeConfig().site;
 let { icp, copyright } = footer;
-let { commitHash, version } = getThemeConfig().theme!; // development模式下获取不到
+// !===============================!
+// 在development模式(即执行pnpm dev)下，commitHash为undefined即版本哈希那里无法查看
+// 如果想要显示 commitHash 请先执行一次pnpm run version 添加一下版本信息
+// 如果正常执行pnpm build指令则不会出现这个问题
+// !===============================!
+let { commitHash, version } = getThemeConfig().theme!;
 ---
 
 <footer>
   <div class="container">
-    <div class="info">
+    <!-- <div class="info">
       <div class="note">
         <div class="logo">
           {nav.logo && <img src={nav.logo} alt={nav.title} />}
@@ -37,6 +42,22 @@ let { commitHash, version } = getThemeConfig().theme!; // development模式下�
           <span>开往</span>
         </a>
       </div>
+    </div> -->
+    <div class="logo">
+      {nav.logo && <img src={nav.logo} alt={nav.title} />}
+      {nav.title}
+    </div>
+    <div class="info">
+      <div class="left">
+        {footer.note}
+      </div>
+      <div class="right">
+        <p>探索</p>
+        <a href="https://www.travellings.cn/typewriter.html" target="_blank">
+          <i class="ri-subway-line"></i>
+          <span>开往</span>
+        </a>
+      </div>
     </div>
     <Divider />
     <div class="copyright">
@@ -46,7 +67,7 @@ let { commitHash, version } = getThemeConfig().theme!; // development模式下�
         <a href="/">{author}</a>
         . All Rights Reserved.
       </span>
-      <span>
+      <span class="ver">
         Powered by <a href="https://astro.build/" target="_blank">Astro</a> & <a
           href="https://github.com/GuaiJieYo/Yuki"
           target="_blank"
@@ -128,33 +149,51 @@ let { commitHash, version } = getThemeConfig().theme!; // development模式下�
       width: 1200px;
       display: flex;
       flex-direction: column;
-      .info {
-        .note {
-          .logo {
-          }
-          span {
-          }
+
+      .logo {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        font-size: 2rem;
+        font-weight: bold;
+
+        img {
+          width: 50px;
+          height: 50px;
+          margin-right: 8px;
         }
-        .icp {
+      }
+
+      .info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        .left ,.right {
+          width: 400px;
           display: flex;
-          align-items: center;
-          img {
-            height: 20px;
-            width: 20px;
-            margin-right: 5px;
+          flex-direction: column;
+          margin: 8px 10px;
+        }
+
+        .right {
+          p {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
           }
         }
       }
+
       .copyright {
         width: 100%;
         margin: 8px auto;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 0.8rem;
+        font-size: 0.9rem;
 
         span {
-          position: relative;
+          &.ver {
+            position: relative;
+          }
 
           .version {
             position: absolute;

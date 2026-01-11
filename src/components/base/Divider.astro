@@ -5,11 +5,7 @@
  * @description 分割线
  * @default horizontal 水平
  */
-let { mode = "horizontal", length = "" } = Astro.props;
-
-const style = length
-  ? `${mode == "horizontal" ? "width" : "height"}:${length};`
-  : "";
+let { mode = "horizontal", style = "" } = Astro.props;
 ---
 
 <div class="divider" class:list={mode} style={style}></div>
