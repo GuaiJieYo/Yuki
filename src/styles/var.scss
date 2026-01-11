@@ -1,0 +1,49 @@
+@use "sass:map";
+
+// 定义主题
+$themes: (
+  // 亮色主题
+  light:
+    (
+      --text-color: rgb(26, 28, 30),
+    ),
+  // 暗色主题
+  dark:
+    (
+      --text-color: rgb(226, 226, 230),
+    ),
+  // 通用主题(亮暗色下都适用的样式)
+  common:
+    (
+      // 颜色
+      --primary-color: rgb(0, 122, 255),
+      --divider-color: rgb(239, 239, 245),
+      // 字体大小
+      font-size: 18px,
+    )
+);
+
+// 主题应用混合器
+@mixin apply-theme($theme-name) {
+  $theme-map: map.get($themes, $theme-name);
+
+  @each $var, $value in $theme-map {
+    #{$var}: $value;
+  }
+}
+
+:root {
+  @include apply-theme("light");
+  @include apply-theme("common");
+}
+
+html[data-theme="dark"] {
+  @include apply-theme("dark");
+}
+
+// 通过媒介查询应用暗色主题
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    @include apply-theme("dark");
+  }
+}

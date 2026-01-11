@@ -1,0 +1,37 @@
+/**
+ * 字体分布
+ * 全局字体以 荆南麦圆体 为主
+ * 代码字体 以 Maple Mono 作为外文字体 以微软雅黑作为中文字体
+ * 图标字体使用 Remixicon
+ * 感谢 ZeoSeven 及 南方科技大学 提供的免费字体 CDN 服务
+ *
+*/
+
+@import url("https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/remixicon/4.6.0/remixicon.min.css"); // Remixicon
+@import url("https://fontsapi.zeoseven.com/116/main/result.css"); // 荆南麦圆体
+
+@font-face {
+  font-family: "Maple Mono";
+  src: url("https://fontsapi.zeoseven.com/443/main.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Maple Mono";
+  src: url("https://fontsapi.zeoseven.com/443/italic.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+* {
+  font-family: "Kingnammm Maiyuan 2", "Microsoft YaHei", sans-serif;
+}
+
+.code,
+code,
+pre {
+  font-family: "Maple Mono", monospace, "Microsoft YaHei", sans-serif !important;
+  font-feature-settings: "calt", "cv01";
+}

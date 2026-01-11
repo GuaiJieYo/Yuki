@@ -1,0 +1,106 @@
+---
+import { getThemeConfig } from "@/utils";
+import Divider from "./base/Divider.astro";
+
+let { nav, footer, author } = getThemeConfig().site;
+let { icp, copyright } = footer;
+---
+
+<footer>
+  <div class="container">
+    <div class="info">
+      <div class="note">
+        <div class="logo">
+          {nav.logo && <img src={nav.logo} alt={nav.title} />}
+          {nav.title}
+        </div>
+        <span>
+          {footer.note}
+        </span>
+      </div>
+      {
+        icp && (
+          <a class="icp" href={icp.url} target="_blank">
+            {icp.icon && <img src={icp.icon} alt={icp.info} />}
+            {icp.info}
+          </a>
+        )
+      }
+    </div>
+    <div class="seek">
+      <span>探索</span>
+      <div>
+        <a href="https://www.travellings.cn/typewriter.html" target="_blank">
+          <i class="ri-subway-line"></i>
+          <span>开往</span>
+        </a>
+      </div>
+    </div>
+    <Divider />
+    <div class="copyright">
+      <span>
+        <i class="ri-copyright-line"></i>
+        <span class="time">{copyright.start}</span>
+        <a href="/">{author}</a>
+        <span>. All Rights Reserved.</span>
+      </span>
+      <span>
+        Powered by <a href="https://astro.build/" target="_blank">Astro</a> & <a
+          href="https://github.com/GuaiJieYo/Yuki"
+          target="_blank">Yuki</a
+        >
+      </span>
+    </div>
+  </div>
+</footer>
+<script>
+  // 计算版权时间
+  let copyTime = document.querySelector(
+    ".copyright > span > .time"
+  ) as HTMLElement;
+  let nowYear = new Date().getFullYear().toString();
+  copyTime.innerText =
+    copyTime.innerText == nowYear
+      ? nowYear
+      : `${copyTime.innerText} - ${nowYear}`;
+</script>
+<style lang="scss">
+  footer {
+    width: 100%;
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    .container {
+      width: 1200px;
+      display: flex;
+      flex-direction: column;
+      .info {
+        .note {
+          .logo {
+          }
+          span {
+          }
+        }
+        .icp {
+          display: flex;
+          align-items: center;
+          img {
+            height: 20px;
+            width: 20px;
+            margin-right: 5px;
+          }
+        }
+      }
+      .copyright {
+        width: 100%;
+        margin: 8px auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.8rem;
+      }
+    }
+  }
+</style>

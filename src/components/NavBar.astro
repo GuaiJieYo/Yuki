@@ -1,0 +1,221 @@
+---
+import { getThemeConfig } from "@/utils";
+// import YDivider from "./base/YDivider.astro";
+
+interface Props {
+  postTitle?: string;
+}
+
+let { postTitle = "" } = Astro.props;
+let { nav, name } = getThemeConfig().site;
+
+// 获取当前路径
+let pathname = Astro.routePattern;
+// 获取第一级路径 一级导航栏的激活状态
+let path = pathname == "/" ? pathname : `/${pathname.split("/")[1]}`;
+---
+
+<nav class="NavBar">
+  <div class="container">
+    <div class="left">
+      <img src={nav.logo} alt={name} />
+      <span>{nav.title}</span>
+    </div>
+    {
+      // 如果是在文章页面，则显示文章标题
+      postTitle && (
+        <div class="center">
+          <span>{postTitle}</span>
+        </div>
+      )
+    }
+    <div class="right">
+      <div class="links">
+        {
+          // 动态生成导航栏
+          nav.links.map((item) => {
+            return (
+              <div
+                class="navLink"
+                class:list={path == item.url ? "active" : ""}
+              >
+                <a href={item.url ? item.url : "javascript:;"}>
+                  {item.icon && <i class={item.icon} />}
+                  <span>{item.name}</span>
+                </a>
+                {item.child && item.child.length > 0 && (
+                  // 动态生成子导航栏
+                  <div class="child">
+                    {item.child.map((child) => {
+                      return (
+                        <a class="childLink" href={child.url}>
+                          {child.icon && <i class={child.icon} />}
+                          <span>{child.name}</span>
+                        </a>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })
+        }
+      </div>
+    </div>
+  </div>
+</nav>
+<script>
+  const navLinks = document.querySelectorAll(".navLink");
+
+  navLinks.forEach((link) => {
+    link.addEventListener("mouseenter", (e) => {
+      const element = e.currentTarget as Element;
+      const child = element.querySelector(".child");
+      if (child) {
+        child.classList.add("show");
+      }
+    });
+    link.addEventListener("mouseleave", (e) => {
+      const element = e.currentTarget as Element;
+      const child = element.querySelector(".child");
+      if (child) {
+        child.classList.remove("show");
+      }
+    });
+  });
+</script>
+<style lang="scss">
+  .NavBar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    padding: 0 20px;
+    height: 60px;
+    color: var(--text-color);
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    z-index: 999;
+    backdrop-filter: blur(12px);
+    background-color: rgba(255, 255, 255, 0.9);
+    // text-rendering: optimizeLegibility; // 解决字体模糊问题
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      height: 100%;
+      padding: 0 5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .left {
+        height: 100%;
+        display: flex;
+        align-items: center;
+
+        img {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          -webkit-user-drag: none;
+          transition: transform 1s ease-in-out;
+
+          &:hover {
+            transform: rotate(360deg);
+          }
+        }
+        span {
+          margin-left: 10px;
+          font-weight: bold;
+          font-size: 1.8rem;
+        }
+      }
+
+      .right {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        font-size: 1.1rem;
+
+        .links {
+          height: 100%;
+          display: flex;
+
+          .navLink {
+            position: relative;
+            margin: 0 8px;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+
+            &.active {
+              &::before {
+                // 下划线
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: calc(100% + 5px);
+                height: 3px;
+                background-color: var(--primary-color);
+              }
+
+              a:not(.childLink) {
+                // 不要让子链高亮 我懒得做子链的适配了 :D
+                color: var(--primary-color);
+              }
+            }
+
+            a {
+              display: flex;
+              align-items: center;
+              transition: color 0.2s ease-in-out;
+
+              span {
+                margin-left: 5px;
+              }
+            }
+
+            .child {
+              visibility: hidden;
+              opacity: 0;
+              display: flex;
+              flex-direction: column;
+              flex-wrap: nowrap;
+              z-index: 999;
+              position: absolute;
+              left: 50%;
+              top: 65px;
+              padding: 5px 20px;
+              transform: translateX(-50%) translateY(30px);
+              background-color: #fff;
+              box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+              border: 1px solid rgba(254, 254, 254, 0.8);
+              border-radius: 15px;
+              transition: all 0.2s ease-in-out;
+
+              &.show {
+                visibility: visible;
+                opacity: 1;
+                transform: translateX(-50%) translateY(0px);
+              }
+
+              .childLink {
+                width: max-content;
+                margin: 10px 0;
+                display: flex;
+                align-items: center;
+
+                span {
+                  margin-left: 8px;
+                  white-space: nowrap;
+                  // 别几把给我换行
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+</style>

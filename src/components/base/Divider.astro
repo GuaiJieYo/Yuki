@@ -1,0 +1,29 @@
+---
+/**
+ * 主题库 - 分割线
+ * @name Divider
+ * @description 分割线
+ * @default horizontal 水平
+ */
+let { mode = "horizontal", length = "" } = Astro.props;
+
+const style = length
+  ? `${mode == "horizontal" ? "width" : "height"}:${length};`
+  : "";
+---
+
+<div class="divider" class:list={mode} style={style}></div>
+<style lang="scss">
+  .divider {
+    background-color: var(--divider-color);
+    margin: 5px 0;
+    &.horizontal {
+      height: 1px;
+      width: 100%;
+    }
+    &.vertical {
+      height: 100%;
+      width: 1px;
+    }
+  }
+</style>
