@@ -11,6 +11,9 @@ const { title = "", keywords = "", description = "" } = Astro.props;
     <BaseHead title={title} keywords={keywords} description={description} />
   </head>
   <body>
+    <noscript>
+      <h1>本站仅支持现代化浏览器并开启JavaScript访问</h1>
+    </noscript>
     <NavBar />
     <main>
       <slot />

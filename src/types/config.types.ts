@@ -180,8 +180,18 @@ export type themeConfig = {
     };
   };
   /**
-   * @name 版本信息
-   * @description 请勿手动修改版本配置
+   * @name 主题配置
    */
-  commitHash?: string;
+  theme?: {
+    /**
+     * @name commit哈希
+     * @description 请勿手动配置
+     */
+    commitHash?: string;
+    /**
+     * @name 版本号
+     * @description 请勿手动配置
+     */
+    version?: string;
+  };
 };

@@ -5,7 +5,7 @@ import Divider from "./base/Divider.astro";
 // 获取主题配置
 let { nav, footer, author } = getThemeConfig().site;
 let { icp, copyright } = footer;
-let commitHash = getThemeConfig().commitHash;
+let { commitHash, version } = getThemeConfig().theme!; // development模式下获取不到
 ---
 
 <footer>
@@ -44,13 +44,13 @@ let commitHash = getThemeConfig().commitHash;
         <i class="ri-copyright-line"></i>
         <span class="time">{copyright.start}</span>
         <a href="/">{author}</a>
-        <span>. All Rights Reserved.</span>
+        . All Rights Reserved.
       </span>
       <span>
         Powered by <a href="https://astro.build/" target="_blank">Astro</a> & <a
           href="https://github.com/GuaiJieYo/Yuki"
           target="_blank"
-          data-github>Yuki</a
+          data-github>Yuki({version})</a
         >
         <span class="version" data-github>
           <i class="ri-github-line"></i>
@@ -58,7 +58,7 @@ let commitHash = getThemeConfig().commitHash;
           {
             commitHash ? (
               <a
-                title="只取前10位"
+                title="前往仓库查看"
                 target="_blank"
                 href={`https://github.com/GuaiJieYo/Yuki/commit/${commitHash}`}
               >

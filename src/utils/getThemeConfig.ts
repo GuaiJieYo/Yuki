@@ -1,12 +1,29 @@
 import ThemeConfig from "@/config.theme";
 import type { themeConfig } from "@/types";
 
+import packageJson from "@/../package.json";
+
+/**
+ * 获取主题版本号
+ * @description 通过读取 package.json 文件中的 version 字段获取主题版本号
+ * @returns 返回主题版本号
+ */
+function _getThemeVersion() {
+  return packageJson.version;
+}
+
 /**
  * 获取主题配置的函数
  * @returns 返回处理后的主题配置对象
  */
-export const getThemeConfig = (): themeConfig => {
-  const config = { ...ThemeConfig, commitHash: import.meta.env.COMMIT_HASH };
+export const getThemeConfig = () => {
+  const config: themeConfig = {
+    ...ThemeConfig,
+    theme: {
+      version: _getThemeVersion(), // 主题版本号
+      commitHash: import.meta.env.COMMIT_HASH || "", // 当前提交的 hash 值
+    },
+  };
   const { site } = config;
 
   // 设置默认值
