@@ -7,18 +7,18 @@ Yuki 是一个简单 轻量的 Astro 主题，基于 Astro 0.8.0 开发
 
 ## 预览
 
-[预览地址](https://yuki-astro.vercel.app/)
+[预览地址https://yuki-astro.vercel.app/](https://yuki-astro.vercel.app/)
 
-## 功能
+## 功能(开发中)
 
-- [] 首页
-- [] 文章页
-- [] 标签页
-- [] 分类页
-- [] 友链页
-- [] 关于页
-- [] 评论系统
-- [] 文章目录
+- [x] 首页
+- [x] 文章页
+- [x] 标签页
+- [x] 分类页
+- [x] 友链页
+- [x] 关于页
+- [x] 评论系统
+- [x] 文章目录
 
 ## Q&A
 
