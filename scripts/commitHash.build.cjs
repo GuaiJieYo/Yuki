@@ -1,20 +1,15 @@
-const { exec } = require("child_process");
-const fs = require("fs").promises;
+const fs = require("fs");
 const path = require("path");
 
-const configPath = path.join(__dirname, "../.env");
+const ORIG_HEAD = path.join(__dirname, "../.git/ORIG_HEAD");
+const envPath = path.join(__dirname, "../.env");
 
-// 获取当前git提交的hash值
-exec("git rev-parse HEAD", async (error, stdout, stderr) => {
-  const hash = error || stderr ? "" : stdout.trim();
-  const logMsg = hash
-    ? `执行version成功:${hash}`
-    : `执行version出错:${error || stderr}`;
-
-  console.log(logMsg);
-  try {
-    await fs.writeFile(configPath, `COMMIT_HASH=${hash}`);
-  } catch (err) {
-    console.error("写入文件失败:", err);
-  }
-});
+try {
+  // 从ORIG_HEAD文件中读取git提交的hash值
+  const hash = fs.readFileSync(ORIG_HEAD, "utf-8").trim();
+  // 将hash值写入.env文件
+  fs.writeFileSync(envPath, `COMMIT_HASH=${hash}`);
+  console.log(`执行version成功:${hash}`);
+} catch (err) {
+  console.error("执行version出错:", err);
+}
