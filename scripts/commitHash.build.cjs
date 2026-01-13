@@ -1,55 +1,56 @@
-// scripts/commitHash.build.cjs
-const { exec } = require("child_process");
-const fs = require("fs");
-const path = require("path");
+const { exec } = require("node:child_process");
+const { promises: fs } = require("node:fs");
+const path = require("node:path");
 
-const ORIG_HEAD = path.join(__dirname, "../.git/ORIG_HEAD/aaa");
-const envPath = path.join(__dirname, "../.env");
+const GIT_ORIG_HEAD_PATH = path.resolve(__dirname, "../.git/ORIG_HEAD");
+const ENV_FILE_PATH = path.resolve(__dirname, "../.env");
 
 /**
- * 通过 .git/ORIG_HEAD 获取commit hash
+ * 获取当前git提交hash
  */
-function getByORIG_HEAD() {
+async function getCommitHash() {
+  // 优先从环境变量获取（Vercel环境）
+  if (process.env.PUBLIC_VERCEL_GIT_COMMIT_SHA) {
+    return process.env.PUBLIC_VERCEL_GIT_COMMIT_SHA;
+  }
+
+  // 尝试从 .git/ORIG_HEAD 获取
   try {
-    let hash = fs.readFileSync(ORIG_HEAD, "utf-8").trim();
-    return hash;
+    return await fs.readFile(GIT_ORIG_HEAD_PATH, "utf-8");
   } catch {
-    return "";
+    // 回退到git命令
+    return new Promise((resolve) => {
+      exec("git rev-parse HEAD", (error, stdout) => {
+        resolve(error ? "" : stdout.trim());
+      });
+    });
   }
 }
 
 /**
- * 通过 git rev-parse HEAD 获取commit hash
+ * 写入hash到.env文件
  */
-function getByGitRevParse() {
-  return new Promise((resolve, reject) => {
-    exec("git rev-parse HEAD", (error, stdout, stderr) => {
-      if (error || stderr) {
-        resolve(""); // 错误时返回空字符串
-      } else {
-        resolve(stdout.trim());
-      }
-    });
-  });
-}
-
-// 主函数
-async function main() {
-  // 判断是否在vercel环境
-  if (!process.env.PUBLIC_VERCEL_GIT_COMMIT_SHA) {
-    // 获取当前git提交的hash值
-    // 依次尝试以上两种获取方式
-    const hash = getByORIG_HEAD() || (await getByGitRevParse());
-
-    // 写入到 .env 文件中
-    try {
-      fs.writeFileSync(envPath, `COMMIT_HASH=${hash}`);
-      console.log("写入成功:", hash);
-    } catch (err) {
-      console.error("写入文件失败:", err);
-    }
+async function writeHashToEnv(hash) {
+  try {
+    await fs.writeFile(ENV_FILE_PATH, `COMMIT_HASH=${hash}`);
+    console.log("✅ 写入成功:", hash);
+    return true;
+  } catch (error) {
+    console.error("❌ 写入文件失败:", error.message);
+    return false;
   }
 }
 
-// 执行主函数
-main();
+// 主执行逻辑
+async function main() {
+  const hash = (await getCommitHash()).trim();
+  
+  if (hash) {
+    await writeHashToEnv(hash);
+  } else {
+    console.warn("⚠️  未获取到commit hash");
+  }
+}
+
+// 执行并处理可能的异常
+main().catch(console.error);
