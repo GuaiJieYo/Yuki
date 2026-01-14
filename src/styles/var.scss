@@ -39,7 +39,8 @@ $themes: (
   @include apply-theme("common");
 }
 
-html[data-theme="dark"] {
+html[data-theme="dark"],
+.dark-theme {
   @include apply-theme("dark");
 }
 

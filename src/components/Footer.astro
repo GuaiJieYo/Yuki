@@ -3,74 +3,43 @@ import { getThemeConfig } from "@/utils";
 import Divider from "./base/Divider.astro";
 
 // 获取主题配置
-let { nav, footer, author } = getThemeConfig().site;
+let { footer, author } = getThemeConfig().site;
 let { icp, copyright } = footer;
 // !===============================!
 // 在development模式(即执行pnpm dev)下，commitHash为undefined即版本哈希那里无法查看
 // 如果想要显示 commitHash 请先执行一次pnpm run version 添加一下版本信息
-// 如果正常执行pnpm build指令则不会出现这个问题
+// 在produce环境下能正常获取到commitHash
 // !===============================!
 let { commitHash, version } = getThemeConfig().theme!;
 ---
 
 <footer>
   <div class="container">
-    <!-- <div class="info">
-      <div class="note">
-        <div class="logo">
-          {nav.logo && <img src={nav.logo} alt={nav.title} />}
-          {nav.title}
-        </div>
-        <span>
-          {footer.note}
-        </span>
-      </div>
-      {
-        icp && (
-          <a class="icp" href={icp.url} target="_blank">
-            {icp.icon && <img src={icp.icon} alt={icp.info} />}
-            {icp.info}
-          </a>
-        )
-      }
-    </div>
-    <div class="seek">
-      <span>探索</span>
-      <div>
-        <a href="https://www.travellings.cn/typewriter.html" target="_blank">
-          <i class="ri-subway-line"></i>
-          <span>开往</span>
-        </a>
-      </div>
-    </div> -->
-    <div class="logo">
-      {nav.logo && <img src={nav.logo} alt={nav.title} />}
-      {nav.title}
-    </div>
-    <div class="info">
-      <div class="left">
-        {footer.note}
-      </div>
-      <div class="right">
-        <p>探索</p>
-        <a href="https://www.travellings.cn/typewriter.html" target="_blank">
-          <i class="ri-subway-line"></i>
-          <span>开往</span>
-        </a>
-      </div>
-    </div>
     <Divider />
     <div class="copyright">
-      <span>
+      <span class="copy">
         <i class="ri-copyright-line"></i>
         <span class="time">{copyright.start}</span>
-        <a href="/">{author}</a>
+        <a class="bold" href="/">{author}</a>
         . All Rights Reserved.
       </span>
+      {
+        icp && (
+          <span class="icp">
+            <a class="bold" href={icp.url} target="_blank">
+              <img src={icp.icon} alt={icp.info} />
+              {icp.info}
+            </a>
+          </span>
+        )
+      }
       <span class="ver">
-        Powered by <a href="https://astro.build/" target="_blank">Astro</a> & <a
+        Powered by <a class="bold" href="https://astro.build/" target="_blank"
+          >Astro</a
+        > & <a
           href="https://github.com/GuaiJieYo/Yuki"
           target="_blank"
+          class="bold"
           data-github>Yuki({version})</a
         >
         <span class="version" data-github>
@@ -79,6 +48,7 @@ let { commitHash, version } = getThemeConfig().theme!;
           {
             commitHash ? (
               <a
+                class="bold"
                 title="前往仓库查看"
                 target="_blank"
                 href={`https://github.com/GuaiJieYo/Yuki/commit/${commitHash}`}
@@ -141,46 +111,16 @@ let { commitHash, version } = getThemeConfig().theme!;
   footer {
     width: 100%;
     color: var(--text-color);
+    background-color: var(--bg-color);
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 0 20px;
+    margin-top: 20px;
     .container {
       width: 1200px;
       display: flex;
       flex-direction: column;
-
-      .logo {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        font-size: 2rem;
-        font-weight: bold;
-
-        img {
-          width: 50px;
-          height: 50px;
-          margin-right: 8px;
-        }
-      }
-
-      .info {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        .left ,.right {
-          width: 400px;
-          display: flex;
-          flex-direction: column;
-          margin: 8px 10px;
-        }
-
-        .right {
-          p {
-            font-size: 1.4rem;
-            margin-bottom: 8px;
-          }
-        }
-      }
 
       .copyright {
         width: 100%;
@@ -188,9 +128,23 @@ let { commitHash, version } = getThemeConfig().theme!;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 0.9rem;
+        font-size: 1.1rem;
 
         span {
+          &.icp {
+            a {
+              display: flex;
+              align-items: center;
+              img {
+                flex-shrink: 0;
+                width: 25px;
+                height: 25px;
+                object-fit: cover;
+                margin-right: 10px;
+              }
+            }
+          }
+
           &.ver {
             position: relative;
           }
@@ -199,7 +153,6 @@ let { commitHash, version } = getThemeConfig().theme!;
             position: absolute;
             top: -50px;
             right: 0;
-            font-size: 1rem;
             padding: 8px 12px;
             border-radius: 10px;
             background: var(--bg-color);
@@ -210,12 +163,12 @@ let { commitHash, version } = getThemeConfig().theme!;
             // 隐藏
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-20px);
+            transform: translateY(-20px) scale(0);
 
             &.show {
               opacity: 1;
               visibility: visible;
-              transform: translateY(0);
+              transform: translateY(0) scale(1);
             }
           }
         }

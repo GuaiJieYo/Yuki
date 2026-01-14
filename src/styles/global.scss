@@ -4,13 +4,40 @@
   box-sizing: border-box;
 }
 
+body {
+  background-color: #ffffff;
+  background-image: linear-gradient(
+      rgba(155, 89, 182, 0.2) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(155, 89, 182, 0.2) 1px, transparent 1px);
+  background-size: 100px 100px;
+  background-position: -1px -1px;
+  animation: gridMove 10s linear infinite;
+}
+
+@keyframes gridMove {
+  0% {
+    background-position: -1px -1px;
+  }
+  100% {
+    background-position: -101px -101px;
+  }
+}
+
 a {
   text-decoration: none;
   color: inherit;
-  transition: color 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  padding: 3px;
+
+  &.bold {
+    font-weight: 600;
+  }
 
   // 链接跳转
-  &[href]:hover {
+  &[href]:hover,
+  &[href]:active {
     cursor: pointer;
     color: var(--primary-color);
   }

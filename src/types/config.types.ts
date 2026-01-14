@@ -132,16 +132,36 @@ export type themeConfig = {
             name: string;
             /**
              * @name 链接
-             * @description 可选
              */
-            url?: string;
+            url: string;
             /**
              * @name 链接图标
-             * @description 可选
              * @description 默认选用remixicon图标 可以前往其网站搜索图标
              * @link https://remixicon.com/
              */
-            icon?: string;
+            icon: string;
+          }
+      )[];
+      /**
+       * @name 联系方式
+       */
+      contact: (
+        | number
+        | {
+            /**
+             * @name 联系方式名称
+             */
+            name: string;
+            /**
+             * @name 联系方式链接
+             */
+            url: string;
+            /**
+             * @name 联系方式图标
+             * @description 默认选用remixicon图标 可以前往其网站搜索图标
+             * @link https://remixicon.com/
+             */
+            icon: string;
           }
       )[];
       /**
@@ -177,6 +197,17 @@ export type themeConfig = {
          */
         start: string;
       };
+    };
+    /**
+     * @name 站点评论配置
+     * @description 可选
+     * @description 默认使用waline作为评论系统
+     */
+    comment?: {
+      /**
+       * @name 是否启用评论
+       */
+      enable: boolean;
     };
   };
   /**

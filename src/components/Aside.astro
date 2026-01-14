@@ -1,0 +1,27 @@
+---
+// 侧边栏
+let { catalog } = Astro.props;
+---
+
+<aside>
+  <div class="author">
+    <img class="avatar" src="" alt="" />
+    <p class="id"></p>
+  </div>
+  {
+    catalog && (
+      <div class="catalog">
+        <h1>目录</h1>
+      </div>
+    )
+  }
+</aside>
+<style lang="scss">
+  aside {
+    position: sticky;
+    // top: 700px;
+    width: 200px;
+    height: 200px;
+    background-color: #f0f0f0;
+  }
+</style>

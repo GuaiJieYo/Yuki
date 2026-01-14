@@ -1,15 +1,15 @@
 import ThemeConfig from "@/config.theme";
 import type { themeConfig } from "@/types";
 
-import packageJson from "@/../package.json";
+import npmPackage from "@/../package.json";
 
 /**
  * 获取主题版本号
  * @description 通过读取 package.json 文件中的 version 字段获取主题版本号
- * @returns 返回主题版本号
+ * @returns {string} 返回主题版本号
  */
 function _getThemeVersion() {
-  return packageJson.version;
+  return npmPackage.version;
 }
 
 /**
@@ -21,7 +21,10 @@ export const getThemeConfig = () => {
     ...ThemeConfig,
     theme: {
       version: _getThemeVersion(), // 主题版本号
-      commitHash: import.meta.env.COMMIT_HASH || "", // 当前提交的 hash 值
+      commitHash:
+        import.meta.env.PUBLIC_VERCEL_GIT_COMMIT_SHA || // Vercel 自带的环境变量
+        import.meta.env.COMMIT_HASH ||
+        "", // 当前提交的 hash 值
     },
   };
   const { site } = config;

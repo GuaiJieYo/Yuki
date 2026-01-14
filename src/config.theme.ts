@@ -67,11 +67,29 @@ const ThemeConfig: themeConfig = {
       note: "",
       seek: [
         0,
-        1,
         {
           name: "开往",
           icon: "ri-subway-line",
           url: "https://www.travellings.cn/typewriter.html",
+        },
+        {
+          name: "友链",
+          icon: "ri-links-line",
+          url: "/friends",
+        },
+        {
+          name: "RSS",
+          icon: "ri-rss-line",
+          url: "/about",
+        },
+      ],
+      contact: [
+        0,
+        1,
+        {
+          name: "Email",
+          icon: "ri-mail-line",
+          url: "mailto:Yiki-0x0@outlook.com",
         },
       ],
       icp: {
@@ -81,7 +99,7 @@ const ThemeConfig: themeConfig = {
       },
       copyright: {
         start: "2022",
-      }
+      },
     },
   },
 };
