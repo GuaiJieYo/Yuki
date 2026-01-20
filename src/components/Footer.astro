@@ -3,18 +3,26 @@ import { getThemeConfig } from "@/utils";
 import Divider from "./base/Divider.astro";
 
 // 获取主题配置
-let { footer, author } = getThemeConfig().site;
+let { footer, author, social } = getThemeConfig().site;
 let { icp, copyright } = footer;
-// !===============================!
-// 在development模式(即执行pnpm dev)下，commitHash为undefined即版本哈希那里无法查看
-// 如果想要显示 commitHash 请先执行一次pnpm run version 添加一下版本信息
-// 在produce环境下能正常获取到commitHash
-// !===============================!
+// development环境下不获取commitHash 请先执行pnpm run version
 let { commitHash, version } = getThemeConfig().theme!;
 ---
 
 <footer>
   <div class="container">
+    <div class="socials">
+      {
+        social.map((item) => {
+          return (
+            <a href={item.url}>
+              <i class={item.icon} />
+              <span>{item.name}</span>
+            </a>
+          );
+        })
+      }
+    </div>
     <Divider />
     <div class="copyright">
       <span class="copy">
