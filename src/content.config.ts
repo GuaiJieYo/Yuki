@@ -4,7 +4,7 @@ import { z } from "astro/zod";
 
 const blog = defineCollection({
   // 从./post/blog/*.md 文件中加载内容
-  loader: glob({ pattern: "**/*.md", base: "./post/blog" }),
+  loader: glob({ pattern: "**/*.md", base: "./src/contents" }),
   // FrontMatter 内容解析器
   schema: z.object({
     title: z.string(), // 文章标题
